@@ -14,6 +14,8 @@ try:
 except ImportError:
   pass
 
+from blackjack import blackjack_game
+
 # Helpers
 
 def clear():
@@ -23,6 +25,7 @@ def clear():
 def game_select(case):
   switch = {
     "1": guess_numbers,
+    "2": blackjack_game
   }
 
   return switch.get(case, quit_game)()
@@ -97,7 +100,8 @@ def main():
   while True:
     user_input = input(textwrap.dedent("""\
       Please type the number corresponding to the game that you'd like to play. ('q' to quit)\n
-      1. Guess Numbers\n
+      1. Guess Numbers
+      2. Black Jack\n
       > """))
 
     game_select(user_input)
