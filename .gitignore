@@ -1,0 +1,22 @@
+# Python-specific ignores
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Virtual environment ignores
+venv/
+env/
+env.bak/
+env1/
+env2/
+
+# IDE ignores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Dependency management ignores
+pip-lock.txt
+pipenv.lock
