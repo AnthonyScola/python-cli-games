@@ -31,10 +31,14 @@ def resolve_game(active_deck, dealer_hand, player_hand, player_balance):
   discard_pile.extend(dealer_hand + player_hand)
 
   print_board(active_deck, dealer_hand, player_hand, show_dealer_hand=True)
-
   if player_hand_value > 21:
     print("Bust!")
     player_balance -= 100
+
+    if player_balance <= 0:
+      print("You're out of money!")
+      return_to_main_menu()
+
   elif dealer_hand_value > 21:
     print("Dealer busts!")
     player_balance += 100
@@ -50,6 +54,15 @@ def resolve_game(active_deck, dealer_hand, player_hand, player_balance):
   print(f"Your balance: ${player_balance}")
   return player_balance
 
+def return_to_main_menu():
+  global active_deck
+  global player_balance
+
+  print(f"\033cYour final balance: ${player_balance}\nReturning to main menu...\n\n")
+
+  active_deck = standard_deck.copy()
+  player_balance = 1000
+  return
 
 def blackjack_game():
   global player_balance
@@ -97,4 +110,4 @@ def blackjack_game():
   if play_again == "y" or play_again == "yes":
     blackjack_game()
   else:
-    return
+    return_to_main_menu()
