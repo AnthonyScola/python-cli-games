@@ -1,7 +1,7 @@
-def print_hand(player_hand):
-  print(f"Your hand:")
+def print_hand(player_hand, display_name):
+  print(f"{display_name}:")
   print(' '.join([f'[{colorize_card(card)}]' for card in player_hand]))
-  print(f"Total: {evaluate_hand(player_hand)}")
+  print(f"Total: {evaluate_hand(player_hand)}\n")
 
 def clear():
   # Clear the screen
