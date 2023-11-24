@@ -28,9 +28,10 @@ def print_board(active_deck, dealer_hand, player_hand, show_dealer_hand=False):
 def resolve_game(active_deck, dealer_hand, player_hand, player_balance):
   dealer_hand_value = evaluate_hand(dealer_hand)
   player_hand_value = evaluate_hand(player_hand)
+  discard_pile.extend(dealer_hand + player_hand)
 
   print_board(active_deck, dealer_hand, player_hand, show_dealer_hand=True)
-  
+
   if player_hand_value > 21:
     print("Bust!")
     player_balance -= 100
@@ -58,10 +59,17 @@ def blackjack_game():
 
   player_hand_value = 0
 
+  random.shuffle(active_deck)
+
   # Deal the cards
   for i in range(2):
-    player_hand.append(active_deck.pop(random.randint(0,len(active_deck)-1)))
+    if len(active_deck) < 10:
+      active_deck.extend(discard_pile)
+      discard_pile.clear()
+      random.shuffle(active_deck)
+
     dealer_hand.append(active_deck.pop(random.randint(0,len(active_deck)-1)))
+    player_hand.append(active_deck.pop(random.randint(0,len(active_deck)-1)))
 
   print_board(active_deck, dealer_hand, player_hand)
 
