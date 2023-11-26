@@ -1,24 +1,32 @@
+import math
 import textwrap
 import random
+import time
 from .utils import *
 
 player_bets = []
 player_balance = 1000
 
-
-def print_board():
-  clear()
-  print(textwrap.dedent(f"""\
-  ╒══════════════════[ Roulette ]══════════════════╕
-  │ Balance: ${str(player_balance).ljust(22)}               │
-  └────────────────────────────────────────────────┘\
-  """))
-  
+def print_board(winning_number):
+  random_offset = random.randint(0,36) # Add a random offset so that the player does't know where the ball will land
+  winning_number += random_offset % 37
+  for i in range(0,185-random_offset): # subtract offset from 185 so that the ball will land on the winning number
+    ball_pos = (5*(i+(winning_number)+1)+2) % 185  # Move 5 spaces at a time, wrap around at 37
+    print(textwrap.dedent(f"""\
+    \033c
+    ╒══════════════════[ Roulette ]══════════════════╕
+    │ Balance: ${str(player_balance).ljust(22)}               │
+    └────────────────────────────────────────────────┘
+    {' '*ball_pos}\033[97m●\033[0m
+    {roulette_board_string}
+    spinning...\
+    """))
+    time.sleep(0.005 * math.exp(i/50))  # Gradually slow down as i increases
 
 def resolve_game(active_deck, dealer_hand, player_hand, player_balance):
   player_bet_value = evaluate_bets(player_hand)
 
-  print_board(active_deck, dealer_hand, player_hand, show_dealer_hand=True)
+  print_board(winning_number)
   if player_bet_value > 0:
     print("You win!")
     player_balance += player_bet_value
@@ -43,7 +51,11 @@ def roulette_game():
   player_bets = []
   player_hand_value = 0
 
-  print_board()
+  winning_number = random.randint(0,36)
+  print(f"\033cThe winning number is {winning_number}!")
+  time.sleep(2)
+
+  print_board(winning_number)
 
 
   # Player's turn
@@ -51,9 +63,7 @@ def roulette_game():
     print("\nWould you like to place a bet?")
     player_input = input("> ").lower()
     if player_input == "hit" or player_input == "h":
-      player_hand.append(active_deck.pop(random.randint(0,len(active_deck)-1)))
-      print_board(active_deck, dealer_hand, player_hand)
-      player_hand_value = evaluate_hand(player_hand)
+      print_board(winning_number)
     elif player_input == "stay" or player_input == "s":
       break
     else:
