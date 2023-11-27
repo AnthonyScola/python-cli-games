@@ -2,7 +2,7 @@
 #=======================================#
 #   Python Examples                     #
 #   By: Anthony Scola                   #
-#   Updated: 11/18/2023                 #
+#   Updated: 11/24/2023                 #
 #                                       #
 #=======================================#
 
@@ -15,6 +15,7 @@ except ImportError:
   pass
 
 from blackjack import blackjack_game
+from roulette import roulette_game
 
 # Helpers
 
@@ -25,7 +26,8 @@ def clear():
 def game_select(case):
   switch = {
     "1": guess_numbers,
-    "2": blackjack_game
+    "2": blackjack_game,
+    "3": roulette_game,
   }
 
   return switch.get(case, quit_game)()
@@ -101,7 +103,8 @@ def main():
     user_input = input(textwrap.dedent("""\
       Please type the number corresponding to the game that you'd like to play. ('q' to quit)\n
       1. Guess Numbers
-      2. Black Jack\n
+      2. Black Jack
+      3. Roulette\n
       > """))
 
     game_select(user_input)
