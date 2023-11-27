@@ -9,21 +9,22 @@ player_balance = 1000
 
 def print_board(winning_number):
   random_offset = random.randint(0,36) # Add a random offset so that the player does't know where the ball will land
-  winning_number += random_offset % 37
-  for i in range(0,185-random_offset): # subtract offset from 185 so that the ball will land on the winning number
-    ball_pos = (5*(i+(winning_number)+1)+2) % 185  # Move 5 spaces at a time, wrap around at 37
+  iRange = 185-random_offset # subtract offset from 185 so that the ball will land on the winning number
+  offset_winning_number = winning_number + random_offset % 37
+  for i in range(0,iRange): 
+    ball_pos = (5*(i+(offset_winning_number)+1)+2) % 185  # Move 5 spaces at a time, wrap around at 37
     print(textwrap.dedent(f"""\
     \033c
     ╒══════════════════[ Roulette ]══════════════════╕
     │ Balance: ${str(player_balance).ljust(22)}               │
     └────────────────────────────────────────────────┘
     {' '*ball_pos}\033[97m●\033[0m
-    {roulette_board_string}
-    spinning...\
+    {roulette_board_string}\
     """))
     time.sleep(0.005 * math.exp(i/50))  # Gradually slow down as i increases
+  print(f"The winning number is {winning_number}!")
 
-def resolve_game(active_deck, dealer_hand, player_hand, player_balance):
+def resolve_game(winning_number, player_bets):
   player_bet_value = evaluate_bets(player_hand)
 
   print_board(winning_number)
@@ -52,7 +53,6 @@ def roulette_game():
   player_hand_value = 0
 
   winning_number = random.randint(0,36)
-  print(f"\033cThe winning number is {winning_number}!")
   time.sleep(2)
 
   print_board(winning_number)
